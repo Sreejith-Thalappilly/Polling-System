@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from "../contexts/AuthContext";
-import { API_BASE_URL } from "../config/Api";
+import { API_BASE_URL } from '../config/Api';
 
+// Create the AuthContext
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -45,28 +46,29 @@ export const AuthProvider = ({ children }) => {
       });
 
       const { access_token, user: userData } = response.data.data;
-      
       localStorage.setItem('authToken', access_token);
       setToken(access_token);
       setUser(userData);
-      
       return { success: true };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed',
       };
     }
   };
 
   const register = async (userData) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/register`, userData);
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/register`,
+        userData
+      );
       return { success: true, message: response.data.message };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Registration failed',
       };
     }
   };
@@ -90,12 +92,8 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAuthenticated: !!user,
-    isAdmin: user?.role === 'admin'
+    isAdmin: user?.role === 'admin',
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
