@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from './config/api';
 
 const PollContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const usePolls = () => {
   const context = useContext(PollContext);
   if (!context) {
@@ -11,7 +13,6 @@ export const usePolls = () => {
   return context;
 };
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 export const PollProvider = ({ children }) => {
   const [polls, setPolls] = useState([]);
