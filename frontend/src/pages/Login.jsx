@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useAuth } from '../contexts/AuthContext';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+
+const schema = yup.object({
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required')
+});
+
+const Login = () => {
+  const { login, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  const onSubmit = async (data) => {
+    setIsLoading(true);
+    setError('');
+    
+    const result = await login(data.email, data.password);
+    
+    if (result.success) {
+      navigate('/dashboard');
+    } else {
+      setError(result.message);
+    }
+    
+    setIsLoading(false);
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account</p>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
+          {error && (
+            <div className="error-message">
+              {error}
+            </div>
+          )}
+
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <div className="input-group">
+              <Mail className="input-icon" />
+              <input
+                {...register('email')}
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                className={errors.email ? 'error' : ''}
+              />
+            </div>
+            {errors.email && (
+              <span className="field-error">{errors.email.message}</span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <div className="input-group">
+              <Lock className="input-icon" />
+              <input
+                {...register('password')}
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                placeholder="Enter your password"
+                className={errors.password ? 'error' : ''}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle"
+              >
+                {showPassword ? <EyeOff /> : <Eye />}
+              </button>
+            </div>
+            {errors.password && (
+              <span className="field-error">{errors.password.message}</span>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="btn btn-primary btn-full"
+          >
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
+            Don't have an account?{' '}
+            <Link to="/register" className="auth-link">
+              Sign up here
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
