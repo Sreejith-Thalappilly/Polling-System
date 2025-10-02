@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { AuthContext } from './AuthContextContext';
-import { API_BASE_URL } from './config/api';
+import { AuthContext } from "../contexts/AuthContext";
+import { API_BASE_URL } from "../config/Api";
 
 
 export const AuthProvider = ({ children }) => {

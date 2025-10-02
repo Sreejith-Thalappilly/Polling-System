@@ -1,5 +1,5 @@
 // API Configuration
-import { API_BASE_URL } from './config/api';
+const API_BASE_URL = 'http://localhost:3001/api';
 
 // Global State
 let currentUser = null;

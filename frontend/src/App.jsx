@@ -44,6 +44,8 @@ const AdminRoute = ({ children }) => {
 };
 
 function App() {
+  console.log("hello world");
+  
   return (
     <AuthProvider>
       <PollProvider>

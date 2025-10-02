@@ -40,8 +40,7 @@ const Register = () => {
     setError('');
     setSuccess('');
     
-    const { confirmPassword, ...userData } = data;
-    const result = await registerUser(userData);
+    const result = await registerUser(data);
     
     if (result.success) {
       setSuccess(result.message);

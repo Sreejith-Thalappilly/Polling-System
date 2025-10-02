@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from './config/api';
+import { API_BASE_URL } from "../config/Api";
 
 const PollContext = createContext();
 
