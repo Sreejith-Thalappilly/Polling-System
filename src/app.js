@@ -7,7 +7,7 @@ const path = require('path');
 require('dotenv').config();
 
 // Import database initialization
-const { initDatabase } = require('./config/initDatabase');
+const { ConnectDatabase } = require('./config/database');
 
 // Import routes
 const authRoutes = require('./routes/auth');
@@ -47,14 +47,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
-});
+
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -69,17 +62,16 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     // Initialize database
-    await initDatabase();
+    await ConnectDatabase();
     
     // Start listening
     app.listen(PORT, () => {
-      console.log(`🚀 Server is running on port ${PORT}`);
-      console.log(`📱 Application: http://localhost:${PORT}`);
-      console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
-      console.log(`🔑 Default admin: admin@example.com / admin123`);
+      console.log(`Server is running on port ${PORT}`);
+      console.log(`Application: http://localhost:${PORT}`);
+      console.log(`Default admin: admin@example.com / admin123`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error('Failed to start server:', error);
     process.exit(1);
   }
 };

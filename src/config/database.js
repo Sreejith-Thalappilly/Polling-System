@@ -24,15 +24,15 @@ const sequelize = new Sequelize(
   }
 );
 
-// Test database connection
-const testConnection = async () => {
+const ConnectDatabase = async () => {
   try {
     await sequelize.authenticate();
-    console.log('✅ Database connection established successfully.');
+    console.log('Database connected successfully.');
+    return sequelize;
   } catch (error) {
-    console.error('❌ Unable to connect to the database:', error);
-    process.exit(1);
+    console.error('Unable to connect to the database:', error);
+    throw error;
   }
 };
 
-module.exports = { sequelize, testConnection };
+module.exports = { ConnectDatabase, sequelize };
