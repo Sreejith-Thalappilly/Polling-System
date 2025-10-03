@@ -2,7 +2,7 @@
 
 A modern React frontend for the Polling System application, built with Vite, React Router, and modern React hooks.
 
-## 🚀 Features
+## Features
 
 ### Authentication
 - **Login/Register**: Secure authentication with form validation
@@ -22,7 +22,7 @@ A modern React frontend for the Polling System application, built with Vite, Rea
 - **Real-time Updates**: Live poll status and voting updates
 - **Accessibility**: Keyboard navigation and screen reader support
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 - **React 18**: Modern React with hooks and functional components
 - **Vite**: Fast build tool and development server
@@ -33,7 +33,7 @@ A modern React frontend for the Polling System application, built with Vite, Rea
 - **Lucide React**: Beautiful icon library
 - **CSS3**: Modern styling with gradients and animations
 
-## 📦 Installation
+##  Installation
 
 ### Prerequisites
 - Node.js (v16 or higher)
@@ -95,7 +95,7 @@ The frontend communicates with the Express.js backend through:
 - **Authentication**: JWT tokens stored in localStorage
 - **Error Handling**: Comprehensive error handling and user feedback
 
-## 🎨 Design System
+## Design System
 
 ### Colors
 - **Primary**: Linear gradient from #667eea to #764ba2
@@ -115,7 +115,7 @@ The frontend communicates with the Express.js backend through:
 - **Forms**: Clean inputs with validation states
 - **Navigation**: Sticky header with backdrop blur
 
-## 🚀 Development
+## Development
 
 ### Available Scripts
 ```bash
@@ -139,7 +139,7 @@ npm run lint
 - **Form Validation**: React Hook Form with Yup schemas
 - **Error Boundaries**: Graceful error handling
 
-## 🔒 Security Features
+## Security Features
 
 - **JWT Authentication**: Secure token-based authentication
 - **Protected Routes**: Role-based access control
@@ -147,14 +147,14 @@ npm run lint
 - **XSS Protection**: Sanitized user inputs
 - **CSRF Protection**: Secure API communication
 
-## 📱 Responsive Design
+##  Responsive Design
 
 The application is fully responsive with breakpoints:
 - **Mobile**: < 768px
 - **Tablet**: 768px - 1024px
 - **Desktop**: > 1024px
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run tests
@@ -167,7 +167,7 @@ npm run test:watch
 npm run test:coverage
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Build
 ```bash
@@ -179,7 +179,7 @@ npm run build
 - **CDN**: CloudFlare, AWS CloudFront
 - **Server**: Nginx, Apache
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -187,11 +187,11 @@ npm run build
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the ISC License.
 
-## 👨‍💻 Author
+## Author
 
 **Sreejith Thalappilly**
 - GitHub: [@Sreejith-Thalappilly](https://github.com/Sreejith-Thalappilly)

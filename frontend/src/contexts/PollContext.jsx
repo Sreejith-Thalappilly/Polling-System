@@ -52,15 +52,17 @@ export const PollProvider = ({ children }) => {
     }
   };
 
+  // Create a new poll
   const createPoll = async (pollData) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/polls`, pollData);
-      await fetchPolls(); // Refresh polls list
+      await fetchPolls(); 
       return { success: true, data: response.data.data.poll };
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Failed to create poll' 
+        message: err.response?.data?.message || 'Failed to create poll' 
       };
     }
   };

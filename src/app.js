@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const morgan = require('morgan');
 const compression = require('compression');
 const path = require('path');
 require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
 
 // Import database initialization
 const { ConnectDatabase } = require('./config/database');
@@ -14,14 +17,9 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const pollRoutes = require('./routes/polls');
 
-// Import middleware
+// Import middlewares and Security middlewares
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
-
-const app = express();
-const PORT = process.env.PORT || 3001;
-
-// Security middleware
 app.use(helmet());
 app.use(compression());
 
@@ -36,22 +34,10 @@ app.use(cors({
   credentials: true,
 }));
 
-// Logging
-app.use(morgan('combined'));
-
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-// Serve static files
-app.use(express.static(path.join(__dirname, '../public')));
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/polls', pollRoutes);
-
-
 
 // Root endpoint
 app.get('/', (req, res) => {
@@ -72,7 +58,6 @@ const startServer = async () => {
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
       console.log(`Application: http://localhost:${PORT}`);
-      console.log(`Default admin: admin@example.com / admin123`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
