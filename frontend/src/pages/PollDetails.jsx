@@ -34,15 +34,19 @@ const PollDetails = () => {
     setIsVoting(true);
     setError('');
     
-    const result = await voteOnPoll(id, selectedOption);
-    
-    if (result.success) {
-      await loadPoll(); // Refresh poll data
-    } else {
-      setError(result.message);
+    try {
+      const result = await voteOnPoll(id, selectedOption);
+      
+      if (result.success) {
+        await loadPoll(); // Refresh poll data
+      } else {
+        setError(result.message);
+      }
+    } catch (error) {
+      setError('Failed to vote. Please try again.');
+    } finally {
+      setIsVoting(false);
     }
-    
-    setIsVoting(false);
   };
 
   const formatDate = (dateString) => {

@@ -11,8 +11,15 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
-    fetchPolls();
-    fetchMyVotes();
+    const loadData = async () => {
+      try {
+        await fetchPolls();
+        await fetchMyVotes();
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      }
+    };
+    loadData();
   }, []);
 
   const filteredPolls = polls.filter(poll => {

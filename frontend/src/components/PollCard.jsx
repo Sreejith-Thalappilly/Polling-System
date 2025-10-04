@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Users, Eye, EyeOff, BarChart3, User } from 'lucide-react';
+import axios from 'axios';
+import { API_BASE_URL } from '../config/Api';
 
 const PollCard = ({ poll }) => {
   const [selectedOption, setSelectedOption] = useState('');
@@ -30,18 +32,22 @@ const PollCard = ({ poll }) => {
   const handleVote = async (pollId) => {
     if (!selectedOption) return;
 
-    const response = await fetch(`${API_BASE_URL}/polls/${pollId}/vote`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ selectedOption }),
-    });
     setIsVoting(true);
-    setTimeout(() => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/polls/${pollId}/vote`, {
+        selectedOption
+      });
+      
+      if (response.data.success) {
+        // Refresh the page to show updated results
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Voting failed:', error);
+      alert(error.response?.data?.message || 'Failed to vote');
+    } finally {
       setIsVoting(false);
-      setSelectedOption('');
-    }, 1000);
+    }
   };
 
   const hasUserVoted = poll.votes && poll.votes.some(vote => vote.userId === poll.user?.id);
