@@ -27,12 +27,17 @@ const PollCard = ({ poll }) => {
     }
   };
 
-  const handleVote = async () => {
+  const handleVote = async (pollId) => {
     if (!selectedOption) return;
-    
+
+    const response = await fetch(`${API_BASE_URL}/polls/${pollId}/vote`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ selectedOption }),
+    });
     setIsVoting(true);
-    // Vote logic will be handled by the parent component
-    // This is just for UI demonstration
     setTimeout(() => {
       setIsVoting(false);
       setSelectedOption('');
@@ -105,7 +110,7 @@ const PollCard = ({ poll }) => {
               ))}
             </div>
             <button
-              onClick={handleVote}
+              onClick={() => handleVote(poll.id)}
               disabled={!selectedOption || isVoting}
               className="btn btn-primary btn-small"
             >
