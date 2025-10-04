@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,14 +14,13 @@ const schema = yup.object({
     .min(2, 'At least 2 options are required')
     .max(10, 'Maximum 10 options allowed'),
   visibility: yup.string().oneOf(['public', 'private']).required('Visibility is required'),
-  expiresAt: yup.date()
-    .min(new Date(), 'Expiry date must be in the future')
-    .required('Expiry date is required'),
-  allowedUserIds: yup.array().when('visibility', {
-    is: 'private',
-    then: yup.array().min(1, 'At least one user must be selected for private polls'),
-    otherwise: yup.array()
-  })
+  expiresAt: yup.string()
+    .required('Expiry date is required')
+    .test('is-future', 'Expiry date must be in the future', function(value) {
+      if (!value) return false;
+      return new Date(value) > new Date();
+    }),
+  allowedUserIds: yup.array().optional()
 });
 
 const CreatePoll = () => {
@@ -38,6 +37,12 @@ const CreatePoll = () => {
       expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16) // 1 hour from now
     }
   });
+
+  // Set the default value for datetime input
+  useEffect(() => {
+    const defaultTime = new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16);
+    setValue('expiresAt', defaultTime);
+  }, [setValue]);
 
   const visibility = watch('visibility');
 
@@ -63,52 +68,60 @@ const CreatePoll = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log('Form submitted with data:', data);
     setIsSubmitting(true);
     setError('');
 
-    // Filter out empty options
-    const validOptions = data.options.filter(option => option.trim() !== '');
-    
-    if (validOptions.length < 2) {
-      setError('At least 2 valid options are required');
+    try {
+      // Filter out empty options
+      const validOptions = data.options.filter(option => option.trim() !== '');
+      
+      if (validOptions.length < 2) {
+        setError('At least 2 valid options are required');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Check for duplicate options
+      const uniqueOptions = [...new Set(validOptions)];
+      if (uniqueOptions.length !== validOptions.length) {
+        setError('Options must be unique');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Validate expiry time (max 2 hours)
+      const expiresAt = new Date(data.expiresAt);
+      const now = new Date();
+      const maxExpiry = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+      
+      if (expiresAt > maxExpiry) {
+        setError('Poll duration cannot exceed 2 hours');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const pollData = {
+        ...data,
+        options: validOptions,
+        expiresAt: expiresAt.toISOString()
+      };
+
+      console.log('Sending poll data:', pollData);
+      const result = await createPoll(pollData);
+      console.log('Create poll result:', result);
+      
+      if (result.success) {
+        navigate('/dashboard');
+      } else {
+        setError(result.message);
+      }
+    } catch (error) {
+      console.error('Error creating poll:', error);
+      setError('An unexpected error occurred. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      return;
     }
-
-    // Check for duplicate options
-    const uniqueOptions = [...new Set(validOptions)];
-    if (uniqueOptions.length !== validOptions.length) {
-      setError('Options must be unique');
-      setIsSubmitting(false);
-      return;
-    }
-
-    // Validate expiry time (max 2 hours)
-    const expiresAt = new Date(data.expiresAt);
-    const now = new Date();
-    const maxExpiry = new Date(now.getTime() + 2 * 60 * 60 * 1000);
-    
-    if (expiresAt > maxExpiry) {
-      setError('Poll duration cannot exceed 2 hours');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const pollData = {
-      ...data,
-      options: validOptions,
-      expiresAt: expiresAt.toISOString()
-    };
-
-    const result = await createPoll(pollData);
-    
-    if (result.success) {
-      navigate('/dashboard');
-    } else {
-      setError(result.message);
-    }
-    
-    setIsSubmitting(false);
   };
 
   return (

@@ -6,11 +6,11 @@ const handleValidationErrors = (req, res, next) => {
     return res.status(400).json({
       success: false,
       message: 'Validation failed',
-      errors: errors.array().map(err => ({
+      errors: errors.array().map((err) => ({
         field: err.path,
         message: err.msg,
-        value: err.value
-      }))
+        value: err.value,
+      })),
     });
   }
   next();
@@ -22,21 +22,36 @@ const validateUserRegistration = [
     .normalizeEmail()
     .withMessage('Please provide a valid email'),
   body('password')
+    .notEmpty()
+    .withMessage('Password is required')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
+  body('confirmPassword').custom((value, { req }) => {
+    if (!req.body.password) {
+      throw new Error('Password is required');
+    }
+    if (value !== req.body.password) {
+      throw new Error('Password confirmation does not match password');
+    }
+    return true;
+  }),
   body('firstName')
     .trim()
+    .notEmpty()
+    .withMessage('First name is required')
     .isLength({ min: 1, max: 50 })
     .withMessage('First name must be between 1 and 50 characters'),
   body('lastName')
     .trim()
+    .notEmpty()
+    .withMessage('Last name is required')
     .isLength({ min: 1, max: 50 })
     .withMessage('Last name must be between 1 and 50 characters'),
   body('role')
     .optional()
     .isIn(['admin', 'user'])
     .withMessage('Role must be either admin or user'),
-  handleValidationErrors
+  handleValidationErrors,
 ];
 
 const validateUserLogin = [
@@ -44,10 +59,8 @@ const validateUserLogin = [
     .isEmail()
     .normalizeEmail()
     .withMessage('Please provide a valid email'),
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required'),
-  handleValidationErrors
+  body('password').notEmpty().withMessage('Password is required'),
+  handleValidationErrors,
 ];
 
 const validatePollCreation = [
@@ -76,7 +89,7 @@ const validatePollCreation = [
     .optional()
     .isArray()
     .withMessage('Allowed user IDs must be an array'),
-  handleValidationErrors
+  handleValidationErrors,
 ];
 
 const validateVote = [
@@ -84,7 +97,7 @@ const validateVote = [
     .trim()
     .isLength({ min: 1, max: 500 })
     .withMessage('Selected option must be between 1 and 500 characters'),
-  handleValidationErrors
+  handleValidationErrors,
 ];
 
 module.exports = {
@@ -92,5 +105,5 @@ module.exports = {
   validateUserRegistration,
   validateUserLogin,
   validatePollCreation,
-  validateVote
+  validateVote,
 };

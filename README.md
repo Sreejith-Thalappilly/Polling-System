@@ -279,32 +279,43 @@ CMD ["npm", "run", "start:prod"]
 This project was developed with the assistance of AI tools to enhance development speed and code quality:
 
 ### AI Tools Used
-- **Claude (Anthropic)**: Used for comprehensive code generation, architecture planning, and implementation guidance
-- **Code Review**: AI-assisted code review for best practices and security considerations
-- **Documentation**: AI-generated comprehensive documentation and README
+
+- ChatGPT (OpenAI): Primarily used for frontend development assistance, as the developer is expertised in backend development
+- Claude (Anthropic): Used for comprehensive code generation, architecture planning, and implementation guidance
+- Code Review: AI-assisted code review for best practices and security considerations
+- Documentation: AI-generated comprehensive documentation and README
 
 ### How AI Enhanced Development
-1. **Rapid Prototyping**: AI helped generate boilerplate code and project structure
-2. **Best Practices**: Ensured adherence to Nest.js best practices and security standards
-3. **Code Quality**: AI-assisted in writing clean, maintainable, and well-documented code
-4. **Error Handling**: Comprehensive error handling patterns suggested by AI
-5. **Documentation**: Detailed documentation generated with AI assistance
+
+1. Frontend Development: ChatGPT was extensively used for React component development, styling, and frontend logic implementation
+2. Rapid Prototyping: AI helped generate boilerplate code and project structure
+3. Best Practices: Ensured adherence to Nest.js best practices and security standards
+4. Code Quality: AI-assisted in writing clean, maintainable, and well-documented code
+5. Error Handling: Comprehensive error handling patterns suggested by AI
+6. Documentation: Detailed documentation generated with AI assistance
 
 ### Development Process
+
 - Initial project structure and configuration setup
 - Entity design and database schema planning
 - Authentication and authorization implementation
 - API endpoint development and testing
-- Frontend interface creation
+- Frontend interface creation (primarily assisted by ChatGPT)
 - Comprehensive documentation and testing guidelines
+
+### Developer Expertise
+
+- Backend Development: Expert-level proficiency in Node.js, Express.js, Sequelize, and database design
+- Frontend Development: AI-assisted development using ChatGPT for React components, styling, and user interface implementation
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch (git checkout -b feature/amazing-feature)
+3. Commit your changes (git commit -m 'Add some amazing feature')
+4. Push to the branch (git push origin feature/amazing-feature)
 5. Open a Pull Request
+
 
 ## 📄 License
 
