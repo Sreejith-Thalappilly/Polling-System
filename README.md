@@ -1,6 +1,6 @@
 # Polling System
 
-A comprehensive polling system built with Nest.js backend and vanilla JavaScript frontend, featuring role-based access control, secure authentication, and real-time poll management.
+A comprehensive polling system built with Node.js backend and  JavaScript React frontend, featuring role-based access control, secure authentication, and real-time poll management.
 
 ## Features
 
@@ -289,7 +289,7 @@ This project was developed with the assistance of AI tools to enhance developmen
 
 1. Frontend Development: ChatGPT was extensively used for React component development, styling, and frontend logic implementation
 2. Rapid Prototyping: AI helped generate boilerplate code and project structure
-3. Best Practices: Ensured adherence to Nest.js best practices and security standards
+3. Best Practices: Ensured adherence to Node.js best practices and security standards
 4. Code Quality: AI-assisted in writing clean, maintainable, and well-documented code
 5. Error Handling: Comprehensive error handling patterns suggested by AI
 6. Documentation: Detailed documentation generated with AI assistance
@@ -329,7 +329,7 @@ This project is licensed under the ISC License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Nest.js team for the excellent framework
+- Node.js Team
 - TypeORM for database management
 - The open-source community for various libraries and tools
 - AI assistance for accelerating development and ensuring code quality
